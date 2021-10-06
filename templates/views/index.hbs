@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="icon" href="/images/LynxHead.png">
+        <link rel="stylesheet" href="./css/styles.css">
+    </head>
+        <body>
+            <div class="main-content">
+                <title>Lynx Video App</title>
+                <img class="lynxlogo" src=./images/LynxLogo.jpg><br><br>
+                <label for="layout"><b>Layout:</b></label>
+                <select name="layout" id="layout">
+                    <option value="Football-1"> Football-1</option>
+                    <option value="Soccer-1">Soccer-1</option>
+                </select><br><br>
+
+                <b>Home Team</b><br>
+                <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}"</input><br>
+                <input id="HomeScore" placeholder="Score" Value="{{HomeScore}}"></input><br><br>
+                <b>Away Team</b><br>
+                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}"></input><br>
+                <input id="AwayScore" placeholder="Score" Value="{{AwayScore}}"></input><br><br>
+                <button id="send">Send</button><br><br>
+
+                <b>Clock</b><br>
+                <button id="StartTime">Start</button>
+                <button id="StopTime">Stop</button>
+                <p id="clockrunning" style="margin-left:2%; color: red">Clock is Stopped</p>
+                <button id="SetTime">Set</button>
+                <input id="ClockTime" placeholder="Time (mm:ss)" Value="{{Time}}"></input><br>
+                
+                <script src="/socket.io/socket.io.js"></script>
+                <script src=./js/app.js></script>
+                <script>
+                    let startBtn = document.getElementById("StartTime")
+                    startBtn.addEventListener("click", function() {
+                        const text = document.getElementById("clockrunning")
+                        text.innerHTML = "Clock is Running"
+                        text.style.color = "green"
+                    })
+                    let stopBtn = document.getElementById("StopTime")
+                    stopBtn.addEventListener("click", function() {
+                        const text = document.getElementById("clockrunning")
+                        text.innerHTML = "Clock is Stopped"
+                        text.style.color = "red"
+                    })
+                </script>
+            </div>
+            {{>footer}}
+        </body>
+</html>
