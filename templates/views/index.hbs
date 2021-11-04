@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 
-<html>
-    <head>
-        <link rel="icon" href="/images/LynxHead.png">
-        <link rel="stylesheet" href="./css/styles.css">
+   <html>
+   <head>
+       <link rel="icon" href="/images/LynxHead.png">
+       <link rel="stylesheet" href="./css/styles.css">
     </head>
-        <body>
-            <div class="main-content">
-                <title>Lynx Video App</title>
-                <img class="lynxlogo" src=./images/LynxLogo.jpg><br><br>
+    <body onload="document.getElementById('defaultOpen').click();">
+        <div class="main-content">
+            <title>Lynx Video App</title>
+            <img class="lynxlogo" src=./images/LynxLogo.jpg><br><br>
+            <div class="tab">
+                <button class="tablinks" onClick="openTab(event, 'Setup')">Setup</button>
+                <button class="tablinks" onClick="openTab(event, 'Operate')" id="defaultOpen">Operate</button>
+                <button class="tablinks" onClick="openTab(event, 'Settings')">Settings</button>
+            </div>
+
+            <div id="Setup" class="tabcontent" style="display:block">
                 <label for="layout"><b>Layout:</b></label>
                 <select name="layout" id="layout">
                     <option value="Football-1"> Football-1</option>
@@ -17,9 +24,16 @@
 
                 <b>Home Team</b><br>
                 <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}"</input><br>
-                <input id="HomeScore" placeholder="Score" Value="{{HomeScore}}"></input><br><br>
                 <b>Away Team</b><br>
-                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}"></input><br>
+                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}"></input><br><br>
+
+                <button id="save">Save</button><br><br>
+            </div>
+
+            <div id="Operate" class="tabcontent">
+                <b>{{HomeTeam}}</b><br>
+                <input id="HomeScore" placeholder="Score" Value="{{HomeScore}}"></input><br><br>
+                <b>{{AwayTeam}}</b><br>
                 <input id="AwayScore" placeholder="Score" Value="{{AwayScore}}"></input><br><br>
                 <button id="send">Send</button><br><br>
 
@@ -28,25 +42,63 @@
                 <button id="StopTime">Stop</button>
                 <p id="clockrunning" style="margin-left:2%; color: red">Clock is Stopped</p>
                 <button id="SetTime">Set</button>
-                <input id="ClockTime" placeholder="Time (mm:ss)" Value="{{Time}}"></input><br>
-                
-                <script src="/socket.io/socket.io.js"></script>
-                <script src=./js/app.js></script>
+                <input id="ClockTime" placeholder="Time (mm:ss)" Value="{{SetTime}}"></input><br>
+            </div>
+
+            <div id="Settings" class="tabcontent">
+                <b>Clock Mode:</b><br>
+                <input type="radio" id="clock_countup" name="fav_language" value="up">
+                <label for="clock_countup">Count Up</label><br>
+                <input type="radio" id="clock_countdown" name="fav_language" value="down">
+                <label for="clock_countup">Count Down</label><br>
                 <script>
-                    let startBtn = document.getElementById("StartTime")
-                    startBtn.addEventListener("click", function() {
-                        const text = document.getElementById("clockrunning")
-                        text.innerHTML = "Clock is Running"
-                        text.style.color = "green"
-                    })
-                    let stopBtn = document.getElementById("StopTime")
-                    stopBtn.addEventListener("click", function() {
-                        const text = document.getElementById("clockrunning")
-                        text.innerHTML = "Clock is Stopped"
-                        text.style.color = "red"
-                    })
+                    // Get the element with id="Count Up" and click on it
+                    document.getElementById('clock_countdown').click();
                 </script>
             </div>
-            {{>footer}}
-        </body>
+
+            <script src="/socket.io/socket.io.js"></script>
+            <script src=./js/app.js></script>
+            <script>
+                let saveBtn = document.getElementById("save")
+                saveBtn.addEventListener("click", function() {
+                    window.location.reload()
+                })
+                let startBtn = document.getElementById("StartTime")
+                startBtn.addEventListener("click", function() {
+                    const text = document.getElementById("clockrunning")
+                    text.innerHTML = "Clock is Running"
+                    text.style.color = "green"
+                })
+                let stopBtn = document.getElementById("StopTime")
+                stopBtn.addEventListener("click", function() {
+                    const text = document.getElementById("clockrunning")
+                    text.innerHTML = "Clock is Stopped"
+                    text.style.color = "red"
+                })
+            </script>
+            <script>
+                function openTab(evt, tabName) {
+                    // Declare all variables
+                    var i, tabcontent, tablinks;
+
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+
+                    // Get all elements with class="tablinks" and remove the class "active"
+                    tablinks = document.getElementsByClassName("tablinks");
+                    for (i = 0; i < tablinks.length; i++) {
+                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                    }
+                    // Show the current tab, and add an "active" class to the button that opened the tab
+                    document.getElementById(tabName).style.display = "block";
+                    evt.currentTarget.className += " active";
+                }
+           </script>
+         </div>
+        {{>footer}}
+    </body>
 </html>

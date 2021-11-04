@@ -19,11 +19,10 @@
 	!error "VERSION and VERSION_BETA must be defined by the caller."
 !endif
 
-!define APPLICATION "CameraTracker"
-!define EXECUTABLE "CameraTracker"
-!define DEFAULTDIR "$PROGRAMFILES\IsoLynx"
-!define IsolynxDir "c:\IsoLynx"
-!define COMPANY "IsoLynx"
+!define APPLICATION "SBLynx"
+!define EXECUTABLE "SBLynx"
+!define DEFAULTDIR "$PROGRAMFILES\SBLynx"
+!define COMPANY "Lynx System Developers, Inc."
 
 !define INSTALLER "${APPLICATION}-${VERSION}${VERSION_BETA}.exe"
 !define UNINSTALLER "uninstall-${APPLICATION}.exe"
@@ -144,44 +143,29 @@ Section "${APPLICATION} (required)"
 
 	SectionIn RO
 
-        CreateDirectory "${IsolynxDir}\TeamInfo"
-
 	; Set output path to the installation directory.
 	SetOutPath "$INSTDIR"
 
-        !insertmacro CheckAndInstallDotNet 47
+        ; !insertmacro CheckAndInstallDotNet 47
 
-	; Program Files
-	File "${EXECUTABLE}.exe"
-        File "AppIcon.ico"
-        File "CameraCommands.txt"
+        ; Configuration Files
+        File "${EXECUTABLE}\*.json"
 
-	; Scoreboard scripts
-	SetOutPath "${IsoLynxDir}\FinishLynx"
-	File "TrackResults.lss"
+        ; Node.js application files
+	SetOutPath $INSTDIR\node_modules
+        File /r "${EXECUTABLE}\node_modules"
+	SetOutPath $INSTDIR\public
+        File /r "${EXECUTABLE}\public"
+	SetOutPath $INSTDIR\src
+        File /r "${EXECUTABLE}\src"
+	SetOutPath $INSTDIR\templates
+        File /r "${EXECUTABLE}\templates"
 
-	; DLL's
-	SetOutPath "$INSTDIR"
-	File "IsoLynxClassLib.dll"
-	File "IsoLynxLCM.dll"
-	File "LCM.dll"
+        ; Install Node.JS
+        File "${EXECUTABLE}\node-v14.17.5-x64.msi"
+        ExecWait "$INSTDIR\node-v14.17.5-x64.msi /quiet /norestart"
 
-        ; Versions file
-        File "CameraTrackerVersions.txt"
-
-        ; Teams
-	SetOutPath "${IsolynxDir}\TeamInfo"
-        SetOverWrite ifnewer
-        File "Standard.Lures.txt" 
-        SetOverWrite on
-
-        ; Help Files
-	SetOutPath "${IsoLynxDir}\Support"
-	SetOverwrite off
-        File "default.htm" 
-	SetOverwrite on
-
-       ; Reset current dir back to normal
+        ; Reset current dir back to normal
 	SetOutPath "${DEFAULTDIR}\${APPLICATION}"
 
 	; Create "Start Programs" shortcut.
@@ -216,30 +200,47 @@ SectionEnd
 
 Section "Uninstall"
 
+        ; Configuration Files
+        Delete "$INSTDIR\*.json"
+
+        ; Node.js application files
+	;SetOutPath $INSTDIR\node_modules
+        ;File /r "${EXECUTABLE}\node_modules"
+	;SetOutPath $INSTDIR\public
+        ;File /r "${EXECUTABLE}\public"
+	;SetOutPath $INSTDIR\src
+        ;File /r "${EXECUTABLE}\src"
+	;SetOutPath $INSTDIR\templates
+        ;File /r "${EXECUTABLE}\templates"
+
+        ; Install Node.JS
+        ;File "${EXECUTABLE}\node-v14.17.5-x64.msi"
+        ;ExecWait "$INSTDIR\node-v14.17.5-x64.msi /quiet /norestart"
+
 	; Program Files
-	Delete "$INSTDIR\${EXECUTABLE}.exe"
-        Delete "$INSTDIR\AppIcon.ico"
-        Delete "$INSTDIR\CameraCommands.txt"
+	;Delete "$INSTDIR\${EXECUTABLE}.exe"
+        ;Delete "$INSTDIR\AppIcon.ico"
+        ;Delete "$INSTDIR\CameraCommands.txt"
 	; Scoreboard scripts
-	SetOutPath "${IsoLynxDir}\FinishLynx"
-	Delete "TrackResults.lss"
+	;SetOutPath "${IsoLynxDir}\FinishLynx"
+	;Delete "TrackResults.lss"
 	; DLL's
-	Delete "$INSTDIR\IsoLynxClassLib.dll"
-	Delete "$INSTDIR\IsoLynxLCM.dll"
-	Delete "$INSTDIR\LCM.dll"
+	;Delete "$INSTDIR\IsoLynxClassLib.dll"
+	;Delete "$INSTDIR\IsoLynxLCM.dll"
+	;Delete "$INSTDIR\LCM.dll"
         ; Versions File
-        Delete "$INSTDIR\CameraTrackerVersions.txt"
+        ;Delete "$INSTDIR\CameraTrackerVersions.txt"
 
         ; Teams 
-	SetOutPath "${IsolynxDir}\TeamInfo"
-        Delete "Standard.Lures.txt" 
+	;SetOutPath "${IsolynxDir}\TeamInfo"
+        ;Delete "Standard.Lures.txt" 
 
 	; Remove uninstaller.
-	Delete "$INSTDIR\${UNINSTALLER}"
+	;Delete "$INSTDIR\${UNINSTALLER}"
 
 	; Remove shortcuts.
-	Delete "$SMPROGRAMS\${APPLICATION}.lnk"
-        Delete "$DESKTOP\${APPLICATION}.lnk"
+	;Delete "$SMPROGRAMS\${APPLICATION}.lnk"
+        ;Delete "$DESKTOP\${APPLICATION}.lnk"
 
 	; Remove uninstall info.
 	DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION}"

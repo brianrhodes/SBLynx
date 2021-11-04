@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.01"
+const VERSION = "v0.03"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -31,17 +31,20 @@ app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
 let clockRun = false
+let clockDirection = 'down'
 let myVar = setInterval(clockTimer, 1000);
 let clockCount = 0;
 let g_rtv_socket = 0
 
-var appOptions = {
+let appOptions = {
     Layout: "",
     HomeTeam: "",
     HomeScore: "",
     AwayTeam: "",
     AwayScore: "",
-    Time: ""
+    SetTime: "15:00",
+    CurrentTime: "15:00",
+    UpDown: "down"
 }
 
 // Setup static directory to server
@@ -53,11 +56,30 @@ app.get('', (req,res) => {
         var data = fs.readFileSync('./config.json'), 
         myObj;
         myObj = JSON.parse(data);
+        appOptions = myObj
     }
     catch (err) {
-        console.log('Error parsing config.json')
-    }
+        // No config file - Save App Info
+        appOptions.Layout = ""
+        appOptions.HomeTeam = "Home Name"
+        appOptions.HomeScore = "0"
+        appOptions.AwayTeam = "Away Name"
+        appOptions.AwayScore = "0"
+        appOptions.SetTime = "15:00"
+        appOptions.CurrentTime = "15:00"
+        var data = JSON.stringify(appOptions);
+        myObj = JSON.parse(data);
 
+        fs.writeFile('./config.json', data, function (err) {
+            if (err) {
+                console.log('There has been an error saving your configuration data.');
+                console.log(err.message);
+                return;
+            }
+            console.log('Configuration saved successfully.')
+        });
+    }
+    
     res.render('index', {
         version: VERSION,
         copyright: COPYRIGHT,
@@ -66,34 +88,49 @@ app.get('', (req,res) => {
         HomeScore: myObj != undefined ? myObj.HomeScore : "0",
         AwayTeam: myObj != undefined ? myObj.AwayTeam : "",
         AwayScore: myObj != undefined ? myObj.AwayScore : "0",
-        Time: myObj != undefined ? myObj.Time : "00:00"
+        SetTime: myObj != undefined ? myObj.SetTime : "15:00",
+        CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00"
     })
+    
+    var parts = myObj.CurrentTime.split(":")
+    let minutes = parseInt(parts[0])
+    let seconds = parseInt(parts[1])
+    clockCount = (minutes * 60) + seconds
 })
 
 // For the running clock
 function clockTimer() {
     if(clockRun) {
+        let out_str = ""
+        let minutes = 0
+        minutes = Math.floor(clockCount / 60)
+        let seconds = 0
+        seconds = clockCount - (minutes * 60)
         if(g_rtv_socket) {
-            let out_str = ""
-        
-            let minutes = 0
-            minutes = Math.floor(clockCount / 60)
-            let seconds = 0
-            seconds = clockCount - (minutes * 60)
             out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
             out_str += "\x03\x04"
             console.log(out_str)
             g_rtv_socket.write(out_str)
         }
-        if(clockCount > 0)
-            clockCount--
+        else {
+            out_str = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0')
+            console.log(out_str)
+        }
+
+        if(clockDirection == "down") {
+            if(clockCount > 0)
+                clockCount--
+        }
+        else {
+            clockCount++
+        }
     }
 }
 
 io.on('connection', (socket) => {
     console.log("New Websocket connection")
 
-    socket.on('data', (data) => {
+    socket.on('send', (data) => {
         let out_str = ""
         let layoutName = "VideoApp-" + data[0].layout
     
@@ -105,47 +142,49 @@ io.on('connection', (socket) => {
         if(g_rtv_socket)
             g_rtv_socket.write(out_str)
 
-        // Save App Info
-        appOptions.Layout = data[0].layout
-        appOptions.HomeTeam = data[1].team
-        appOptions.HomeScore = data[1].score
-        appOptions.AwayTeam = data[2].team
-        appOptions.AwayScore = data[2].score
-        appOptions.Time = data[3].time
-        var data = JSON.stringify(appOptions);
-  
-        fs.writeFile('./config.json', data, function (err) {
-            if (err) {
-                console.log('There has been an error saving your configuration data.');
-                console.log(err.message);
-                return;
-            }
-            console.log('Configuration saved successfully.')
-        });
+        SaveAppInfo(data)
+    })
+
+    socket.on('save', (data) => {
+        SaveAppInfo(data)
     })
 
     socket.on('startclock', (data) => {
-        console.log("Starting Clock")
+        console.log("Starting Clock: " + data[3].UpDown)
+        clockDirection = data[3].UpDown
         clockRun = true
+        let minutes = Math.floor(clockCount / 60)
+        let seconds = clockCount - (minutes * 60)
+        data[3].CurrentTime = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0')
+
+        SaveAppInfo(data)
     })
 
     socket.on('stopclock', (data) => {
         console.log("Stopping Clock")
         clockRun = false
+
+        let minutes = Math.floor(clockCount / 60)
+        let seconds = clockCount - (minutes * 60)
+        data[3].CurrentTime = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0')
+        SaveAppInfo(data)
     })
 
     socket.on('setclock', (data) => {
-        console.log("Resetting Clock: " + data[0].time)
-        var parts = data[0].time.split(":")
+        console.log("Resetting Clock: " + data[3].SetTime)
+        var parts = data[3].SetTime.split(":")
         let minutes = parseInt(parts[0])
         let seconds = parseInt(parts[1])
         clockCount = (minutes * 60) + seconds
+        data[3].CurrentTime = data[3].SetTime
 
         out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
         out_str += "\x03\x04"
+
         if(g_rtv_socket)
             g_rtv_socket.write(out_str)
 
+        SaveAppInfo(data)
     })
 })
 
@@ -153,6 +192,26 @@ io.on('connection', (socket) => {
      console.log('Server is up on port ' + port)
  })
 
+ function SaveAppInfo(data) {
+    appOptions.Layout = data[0].layout
+    appOptions.HomeTeam = data[1].team
+    appOptions.HomeScore = data[1].score
+    appOptions.AwayTeam = data[2].team
+    appOptions.AwayScore = data[2].score
+    appOptions.SetTime = data[3].SetTime
+    appOptions.CurrentTime = data[3].CurrentTime
+    appOptions.UpDown = data[3].UpDown
+    var data = JSON.stringify(appOptions);
+
+    fs.writeFile('./config.json', data, function (err) {
+        if (err) {
+            console.log('There has been an error saving your configuration data.');
+            console.log(err.message);
+            return;
+        }
+        console.log('Configuration saved successfully.')
+    });
+ }
 //
 // RESULTV SERVER
 // The server listens to a socket for a client to make a connection request.

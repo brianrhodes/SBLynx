@@ -6,11 +6,11 @@ const HomeName = document.querySelector('#HomeName')
 const HomeScore = document.querySelector('#HomeScore')
 const AwayName = document.querySelector('#AwayName')
 const AwayScore = document.querySelector('#AwayScore')
+const CountUp = document.querySelector('#clock_countup')
+const CountDown = document.querySelector('#clock_countdown')
 
-document.querySelector('#send').addEventListener('click', (e) => {
-    e.preventDefault()
-    
-    socket.emit('data', [
+function DoSocketEmit(command) {
+    socket.emit(command, [
         {
             "layout": layout.value
         },
@@ -23,22 +23,34 @@ document.querySelector('#send').addEventListener('click', (e) => {
             "score": AwayScore.value
         },
         {
-            "time": ClockTime.value        }
-    ])
-})
-
-document.querySelector("#StartTime").addEventListener('click', () => {
-    socket.emit('startclock')
-})
-
-document.querySelector("#StopTime").addEventListener('click', () => {
-    socket.emit('stopclock')
-})
-
-document.querySelector("#SetTime").addEventListener('click', () => {
-    socket.emit('setclock', [
-        {
-            "time": ClockTime.value
+            "SetTime": ClockTime.value,     
+            "CurrentTime": "00:00",     
+            "UpDown": (CountUp.checked ? "up" : "down")
         }
     ])
+}
+document.querySelector('#send').addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('send')
+})
+
+document.querySelector('#save').addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('save')
+})
+
+
+document.querySelector("#StartTime").addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('startclock')
+})
+
+document.querySelector("#StopTime").addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('stopclock')
+})
+
+document.querySelector("#SetTime").addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('setclock')
 })
