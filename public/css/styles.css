@@ -86,3 +86,44 @@ button:active {
     border-top: none;
   }
 
+.button-plus {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 25;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #07cc5f;
+  border: none;
+  border-radius: 10px;
+}
+
+.button-minus{
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 25px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #f80a32;
+  border: none;
+  border-radius: 10px;
+}
+
+.score-input {
+  width: 50px;
+  font-size: 20px;
+}
+
+.name-input {
+  width: 100px;
+  font-size: 20px;
+}
+
+.layout {
+  font-size: 20px;
+}

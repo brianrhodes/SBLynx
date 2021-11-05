@@ -17,24 +17,30 @@
 
             <div id="Setup" class="tabcontent" style="display:block">
                 <label for="layout"><b>Layout:</b></label>
-                <select name="layout" id="layout">
-                    <option value="Football-1"> Football-1</option>
+                <select name="layout" id="layout" class="layout">
+                    <option value="Football-1">Football-1</option>
                     <option value="Soccer-1">Soccer-1</option>
                 </select><br><br>
 
                 <b>Home Team</b><br>
-                <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}"</input><br>
+                <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="name-input"</input><br>
                 <b>Away Team</b><br>
-                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}"></input><br><br>
+                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="name-input"></input><br><br>
 
                 <button id="save">Save</button><br><br>
             </div>
 
             <div id="Operate" class="tabcontent">
                 <b>{{HomeTeam}}</b><br>
-                <input id="HomeScore" placeholder="Score" Value="{{HomeScore}}"></input><br><br>
+                <input id="HomeScore" class="score-input" type="number" min="0" max="999" placeholder="Score" Value="{{HomeScore}}"></input>
+                <button id="IncrementHomeScore" class="button-plus">+</button>
+                <button id="DecrementHomeScore" class="button-minus">-</button>
+                <br><br>
                 <b>{{AwayTeam}}</b><br>
-                <input id="AwayScore" placeholder="Score" Value="{{AwayScore}}"></input><br><br>
+                <input id="AwayScore" class="score-input" type="number" min="0" max="999"  placeholder="Score" Value="{{AwayScore}}"></input>
+                <button id="IncrementAwayScore" class="button-plus">+</button>
+                <button id="DecrementAwayScore" class="button-minus">-</button>
+                <br><br>
                 <button id="send">Send</button><br><br>
 
                 <b>Clock</b><br>
@@ -60,21 +66,27 @@
             <script src="/socket.io/socket.io.js"></script>
             <script src=./js/app.js></script>
             <script>
-                let saveBtn = document.getElementById("save")
-                saveBtn.addEventListener("click", function() {
-                    window.location.reload()
-                })
-                let startBtn = document.getElementById("StartTime")
-                startBtn.addEventListener("click", function() {
+                document.getElementById("StartTime").addEventListener("click", function() {
                     const text = document.getElementById("clockrunning")
                     text.innerHTML = "Clock is Running"
                     text.style.color = "green"
                 })
-                let stopBtn = document.getElementById("StopTime")
-                stopBtn.addEventListener("click", function() {
+                document.getElementById("StopTime").addEventListener("click", function() {
                     const text = document.getElementById("clockrunning")
                     text.innerHTML = "Clock is Stopped"
                     text.style.color = "red"
+                })
+                document.getElementById("IncrementHomeScore").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepUp();
+                })
+                document.getElementById("DecrementHomeScore").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepDown();
+                })
+                document.getElementById("IncrementAwayScore").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepUp();
+                })
+                document.getElementById("DecrementAwayScore").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepDown();
                 })
             </script>
             <script>

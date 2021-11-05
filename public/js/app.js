@@ -37,6 +37,7 @@ document.querySelector('#send').addEventListener('click', (e) => {
 document.querySelector('#save').addEventListener('click', (e) => {
     e.preventDefault()
     DoSocketEmit('save')
+    location.reload()
 })
 
 

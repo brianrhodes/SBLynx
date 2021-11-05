@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.03"
+const VERSION = "v0.04"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -92,10 +92,15 @@ app.get('', (req,res) => {
         CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00"
     })
     
-    var parts = myObj.CurrentTime.split(":")
-    let minutes = parseInt(parts[0])
-    let seconds = parseInt(parts[1])
-    clockCount = (minutes * 60) + seconds
+    if(myObj.CurrentTime == "0") {
+        clockCount = 0
+    }
+    else {
+        var parts = myObj.CurrentTime.split(":")
+        let minutes = parseInt(parts[0])
+        let seconds = parseInt(parts[1])
+        clockCount = (minutes * 60) + seconds    
+    }
 })
 
 // For the running clock
@@ -106,6 +111,7 @@ function clockTimer() {
         minutes = Math.floor(clockCount / 60)
         let seconds = 0
         seconds = clockCount - (minutes * 60)
+
         if(g_rtv_socket) {
             out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
             out_str += "\x03\x04"
@@ -172,11 +178,19 @@ io.on('connection', (socket) => {
 
     socket.on('setclock', (data) => {
         console.log("Resetting Clock: " + data[3].SetTime)
-        var parts = data[3].SetTime.split(":")
-        let minutes = parseInt(parts[0])
-        let seconds = parseInt(parts[1])
-        clockCount = (minutes * 60) + seconds
-        data[3].CurrentTime = data[3].SetTime
+
+        let minutes = 0
+        let seconds = 0
+        if(data[3].SetTime == "0") {
+            clockCount = 0
+        }
+        else {
+            var parts = data[3].SetTime.split(":")
+            minutes = parseInt(parts[0])
+            seconds = parseInt(parts[1])
+            clockCount = (minutes * 60) + seconds
+        }
+        data[3].CurrentTime = data[3].SetTime    
 
         out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
         out_str += "\x03\x04"
