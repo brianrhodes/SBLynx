@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b4"
+const VERSION = "v0.1b5"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -91,7 +91,7 @@ app.get('', (req,res) => {
         SetTime: myObj != undefined ? myObj.SetTime : "15:00",
         CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00"
     })
-    
+        
     if(myObj.CurrentTime == "0") {
         clockCount = 0
     }
@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
         let out_str = ""
         let layoutName = "VideoApp-" + data[0].layout
     
-        out_str = "Command=LayoutDraw;Name=" + layoutName +";Clear-1;\x0A"
+        out_str = "Command=LayoutDraw;Name=" + layoutName +";Clear=1;\x0A"
         out_str += "\x01R\x02" + data[1].team + "\x05" + data[2].team + "\x05" + data[1].score + "\x05" + data[2].score + "\x05"
         out_str += "\x03\x04"
 
