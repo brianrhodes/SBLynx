@@ -1,4 +1,4 @@
-xxxconst socket = io()
+const socket = io()
 
 const inputForm = document.querySelector('form')
 const layout = document.querySelector('#layout')
