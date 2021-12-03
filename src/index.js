@@ -285,6 +285,18 @@ io.on('connection', (socket) => {
     socket.on('setperiod', (data) => {
         console.log("Setting Period " + data[3].SetPeriod)
 
+        let minutes = 0
+        let seconds = 0
+        if(data[3].SetTime == "0") {
+            clockCount = 0
+        }
+        else {
+            var parts = data[3].SetTime.split(":")
+            minutes = parseInt(parts[0])
+            seconds = parseInt(parts[1])
+            clockCount = (minutes * 60) + seconds
+        }
+        
         out_str = "\x01V\x02" 
         out_str += "\x12LayoutSetup=16,8\x14"
         out_str += "\x12LayoutBackColor=0x20,0x20,0x20\x14"
