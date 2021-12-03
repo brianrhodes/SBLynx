@@ -112,7 +112,7 @@ app.get('', (req,res) => {
     }
 })
 // To initialize the display
-function clear() {
+function clearDisplay() {
     let out_str = ""
 
     if(g_rtv_socket) {
@@ -201,7 +201,7 @@ io.on('connection', (socket) => {
 			out_str += "\x12FontFaceColor=White\x14"
 			out_str += "\x12FontBorderColor=" + data[2].color + "\x14"
 			out_str += "\x12TextJustify=Left\x14"
-			out_str += "\x12TextDraw=" + data[2].score + "\x14"
+			out_str += "\x12TextDraw=QTR1" + data[2].score + "\x14"
             out_str += "\x12LayoutFlush\x14\x05\x03\x04"
 			console.log(out_str)
             g_rtv_socket.write(out_str)
@@ -216,6 +216,10 @@ io.on('connection', (socket) => {
 
     socket.on('save', (data) => {
         SaveAppInfo(data)
+    })
+
+    socket.on('clear', (data) => {
+        clearDisplay()
     })
 
     socket.on('startclock', (data) => {
