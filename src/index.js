@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b5b"
+const VERSION = "v0.1b6"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -202,7 +202,7 @@ io.on('connection', (socket) => {
 			out_str += "\x12FontFaceColor=White\x14"
 			out_str += "\x12FontBorderColor=" + data[2].color + "\x14"
 			out_str += "\x12TextJustify=Left\x14"
-			out_str += "\x12TextDraw=QTR1" + data[2].score + "\x14"
+			out_str += "\x12TextDraw=" + data[2].score + "\x14"
             out_str += "\x12LayoutFlush\x14\x05\x03\x04"
 			console.log(out_str)
             g_rtv_socket.write(out_str)
