@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b5"
+const VERSION = "v0.1b5a"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -39,9 +39,12 @@ let g_rtv_socket = 0
 let appOptions = {
     Layout: "",
     HomeTeam: "",
+	HomeColor: "",
     HomeScore: "",
     AwayTeam: "",
+	AwayColor: "",
     AwayScore: "",
+    SetPeriod: "",
     SetTime: "15:00",
     CurrentTime: "15:00",
     UpDown: "down"
@@ -62,9 +65,12 @@ app.get('', (req,res) => {
         // No config file - Save App Info
         appOptions.Layout = ""
         appOptions.HomeTeam = "Home Name"
+		appOptions.HomeColor = "Blue"
         appOptions.HomeScore = "0"
         appOptions.AwayTeam = "Away Name"
+		appOptions.AwayColor = "Red"
         appOptions.AwayScore = "0"
+        appOptions.SetPeriod = "Q1"
         appOptions.SetTime = "15:00"
         appOptions.CurrentTime = "15:00"
         var data = JSON.stringify(appOptions);
@@ -85,9 +91,12 @@ app.get('', (req,res) => {
         copyright: COPYRIGHT,
         Layout: myObj != undefined ? myObj.Layout : "",
         HomeTeam: myObj != undefined ? myObj.HomeTeam : "",
+		HomeColor: myObj != undefined ? myObj.HomeColor : "Blue",
         HomeScore: myObj != undefined ? myObj.HomeScore : "0",
         AwayTeam: myObj != undefined ? myObj.AwayTeam : "",
+		AwayColor: myObj != undefined ? myObj.AwayColor : "Red",
         AwayScore: myObj != undefined ? myObj.AwayScore : "0",
+        SetPeriod: myObj != undefined ? myObj.SetPeriod : "Q1",
         SetTime: myObj != undefined ? myObj.SetTime : "15:00",
         CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00"
     })
@@ -102,6 +111,21 @@ app.get('', (req,res) => {
         clockCount = (minutes * 60) + seconds    
     }
 })
+// To initialize the display
+function clear() {
+    let out_str = ""
+
+    if(g_rtv_socket) {
+        out_str = "\x01V\x02" 
+        out_str += "\x12LayoutSetup=1,1\x14"
+        out_str += "\x12LayoutBackColor=0x55,0x00,0x9c\x14"
+        out_str += "\x12ImageSetup=1\x14"
+        out_str += "\x12ImageDraw=Mynx.tga\x14"
+        out_str += "\x12LayoutFlush\x14\x05\x03\x04"
+        console.log(out_str)
+        g_rtv_socket.write(out_str)
+    }
+}
 
 // For the running clock
 function clockTimer() {
@@ -113,8 +137,22 @@ function clockTimer() {
         seconds = clockCount - (minutes * 60)
 
         if(g_rtv_socket) {
-            out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
-            out_str += "\x03\x04"
+            out_str = "\x01V\x02" 
+			out_str += "\x12LayoutSetup=16,8\x14"
+			out_str += "\x12LayoutBackColor=0x20,0x20,0x20\x14"
+			out_str += "\x12FontWidth=100,50\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontShadowSize=1\x14"
+			out_str += "\x12TextJustify=Center\x14"
+			out_str += "\x12TextMargins=20,20\x14"
+			out_str += "\x12TextSetup=8,5,4,2\x14"
+			out_str += "\x12FontFaceColor=Yellow\x14"
+			out_str += "\x12TextDraw=" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x14"
+			out_str += "\x12TextMargins=2,2\x14"
+			out_str += "\x12TextSetup=8,1,4,7\x14"
+			out_str += "\x12FontFaceColor=Yellow\x14"
+			out_str += "\x12TextDraw=QTR1\x14"
+            out_str += "\x12LayoutFlush\x14\x05\x03\x04"
             console.log(out_str)
             g_rtv_socket.write(out_str)
         }
@@ -138,11 +176,36 @@ io.on('connection', (socket) => {
 
     socket.on('send', (data) => {
         let out_str = ""
-        let layoutName = "VideoApp-" + data[0].layout
-    
-        out_str = "Command=LayoutDraw;Name=" + layoutName +";Clear=1;\x0A"
-        out_str += "\x01R\x02" + data[1].team + "\x05" + data[2].team + "\x05" + data[1].score + "\x05" + data[2].score + "\x05"
-        out_str += "\x03\x04"
+
+		    out_str = "\x01V\x02" 
+			out_str += "\x12LayoutSetup=16,8\x14"
+			out_str += "\x12LayoutBackColor=0x20,0x20,0x20\x14"
+			out_str += "\x12FontWidth=100,50\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontShadowSize=1\x14"
+			out_str += "\x12TextJustify=Center\x14"
+			out_str += "\x12TextSetup=8,2,0,0\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontBackColor=" + data[1].color + "\x14"
+			out_str += "\x12TextDraw=" + data[1].team + "\x14"
+			out_str += "\x12TextSetup=4,6,0,2\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontBorderColor=" + data[1].color + "\x14"
+			out_str += "\x12TextJustify=Right\x14"
+			out_str += "\x12TextDraw=" + data[1].score + "\x14"
+			out_str += "\x12TextSetup=8,2,8,0\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontBackColor=" + data[2].color + "\x14"
+			out_str += "\x12TextDraw=" + data[2].team + "\x14"
+			out_str += "\x12TextSetup=4,6,12,2\x14"
+			out_str += "\x12FontFaceColor=White\x14"
+			out_str += "\x12FontBorderColor=" + data[2].color + "\x14"
+			out_str += "\x12TextJustify=Left\x14"
+			out_str += "\x12TextDraw=" + data[2].score + "\x14"
+            out_str += "\x12LayoutFlush\x14\x05\x03\x04"
+			console.log(out_str)
+            g_rtv_socket.write(out_str)
+
 
         console.log(out_str)
         if(g_rtv_socket)
@@ -192,8 +255,22 @@ io.on('connection', (socket) => {
         }
         data[3].CurrentTime = data[3].SetTime    
 
-        out_str = "\x01T\x02" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x05"
-        out_str += "\x03\x04"
+        out_str = "\x01V\x02" 
+        out_str += "\x12LayoutSetup=16,8\x14"
+        out_str += "\x12LayoutBackColor=0x20,0x20,0x20\x14"
+        out_str += "\x12FontWidth=100,50\x14"
+        out_str += "\x12FontFaceColor=White\x14"
+        out_str += "\x12FontShadowSize=1\x14"
+        out_str += "\x12TextJustify=Center\x14"
+        out_str += "\x12TextMargins=20,20\x14"
+        out_str += "\x12TextSetup=8,5,4,2\x14"
+        out_str += "\x12FontFaceColor=Yellow\x14"
+        out_str += "\x12TextDraw=" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x14"
+        out_str += "\x12TextMargins=2,2\x14"
+        out_str += "\x12TextSetup=8,1,4,7\x14"
+        out_str += "\x12FontFaceColor=Yellow\x14"
+        out_str += "\x12TextDraw=\x14"
+        out_str += "\x12LayoutFlush\x14\x05\x03\x04"
 
         if(g_rtv_socket)
             g_rtv_socket.write(out_str)
@@ -209,9 +286,12 @@ io.on('connection', (socket) => {
  function SaveAppInfo(data) {
     appOptions.Layout = data[0].layout
     appOptions.HomeTeam = data[1].team
+	appOptions.HomeColor = data[1].color
     appOptions.HomeScore = data[1].score
     appOptions.AwayTeam = data[2].team
+	appOptions.AwayColor = data[2].color
     appOptions.AwayScore = data[2].score
+    appOptions.SetPeriod = data[3].SetPeriod
     appOptions.SetTime = data[3].SetTime
     appOptions.CurrentTime = data[3].CurrentTime
     appOptions.UpDown = data[3].UpDown
