@@ -129,6 +129,7 @@ function clearDisplay() {
 
 // For the running clock
 function clockTimer() {
+
     if(clockRun) {
         let out_str = ""
         let minutes = 0
@@ -151,7 +152,7 @@ function clockTimer() {
 			out_str += "\x12TextMargins=2,2\x14"
 			out_str += "\x12TextSetup=8,1,4,7\x14"
 			out_str += "\x12FontFaceColor=Yellow\x14"
-			out_str += "\x12TextDraw=QTR1\x14"
+			out_str += "\x12TextDraw=" + appOptions.SetPeriod + "\x14"
             out_str += "\x12LayoutFlush\x14\x05\x03\x04"
             console.log(out_str)
             g_rtv_socket.write(out_str)
@@ -273,7 +274,32 @@ io.on('connection', (socket) => {
         out_str += "\x12TextMargins=2,2\x14"
         out_str += "\x12TextSetup=8,1,4,7\x14"
         out_str += "\x12FontFaceColor=Yellow\x14"
-        out_str += "\x12TextDraw=\x14"
+        out_str += "\x12TextDraw=" + data[3].SetPeriod + "\x14"
+        out_str += "\x12LayoutFlush\x14\x05\x03\x04"
+
+        if(g_rtv_socket)
+            g_rtv_socket.write(out_str)
+
+        SaveAppInfo(data)
+    })
+    socket.on('setperiod', (data) => {
+        console.log("Setting Period " + data[3].SetPeriod)
+
+        out_str = "\x01V\x02" 
+        out_str += "\x12LayoutSetup=16,8\x14"
+        out_str += "\x12LayoutBackColor=0x20,0x20,0x20\x14"
+        out_str += "\x12FontWidth=100,50\x14"
+        out_str += "\x12FontFaceColor=White\x14"
+        out_str += "\x12FontShadowSize=1\x14"
+        out_str += "\x12TextJustify=Center\x14"
+        out_str += "\x12TextMargins=20,20\x14"
+        out_str += "\x12TextSetup=8,5,4,2\x14"
+        out_str += "\x12FontFaceColor=Yellow\x14"
+        out_str += "\x12TextDraw=" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + "\x14"
+        out_str += "\x12TextMargins=2,2\x14"
+        out_str += "\x12TextSetup=8,1,4,7\x14"
+        out_str += "\x12FontFaceColor=Yellow\x14"
+        out_str += "\x12TextDraw=" + data[3].SetPeriod + "\x14"
         out_str += "\x12LayoutFlush\x14\x05\x03\x04"
 
         if(g_rtv_socket)

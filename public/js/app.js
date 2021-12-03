@@ -10,6 +10,7 @@ const AwayColor = document.querySelector('#AwayColor')
 const AwayScore = document.querySelector('#AwayScore')
 const CountUp = document.querySelector('#clock_countup')
 const CountDown = document.querySelector('#clock_countdown')
+const SetPeriod = document.querySelector('#SetPeriod')
 
 function DoSocketEmit(command) {
     socket.emit(command, [
@@ -29,7 +30,8 @@ function DoSocketEmit(command) {
         {
             "SetTime": ClockTime.value,     
             "CurrentTime": "00:00",     
-            "UpDown": (CountUp.checked ? "up" : "down")
+            "UpDown": (CountUp.checked ? "up" : "down"),
+            "SetPeriod": SetPeriod.value
         }
     ])
 }
@@ -62,4 +64,9 @@ document.querySelector("#StopTime").addEventListener('click', (e) => {
 document.querySelector("#SetTime").addEventListener('click', (e) => {
     e.preventDefault()
     DoSocketEmit('setclock')
+})
+
+document.querySelector("#Period").addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('setperiod')
 })
