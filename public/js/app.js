@@ -3,8 +3,10 @@ const socket = io()
 const inputForm = document.querySelector('form')
 const layout = document.querySelector('#layout')
 const HomeName = document.querySelector('#HomeName')
+const HomeColor = document.querySelector('#HomeColor')
 const HomeScore = document.querySelector('#HomeScore')
 const AwayName = document.querySelector('#AwayName')
+const AwayColor = document.querySelector('#AwayColor')
 const AwayScore = document.querySelector('#AwayScore')
 const CountUp = document.querySelector('#clock_countup')
 const CountDown = document.querySelector('#clock_countdown')
@@ -16,10 +18,12 @@ function DoSocketEmit(command) {
         },
         {
             "team": HomeName.value,
+			"color": HomeColor.value,
             "score": HomeScore.value
         }, 
         {
             "team": AwayName.value,
+			"color": AwayColor.value,
             "score": AwayScore.value
         },
         {
@@ -32,6 +36,10 @@ function DoSocketEmit(command) {
 document.querySelector('#send').addEventListener('click', (e) => {
     e.preventDefault()
     DoSocketEmit('send')
+})
+document.querySelector('#clear').addEventListener('click', (e) => {
+    e.preventDefault()
+    DoSocketEmit('clear')
 })
 
 document.querySelector('#save').addEventListener('click', (e) => {

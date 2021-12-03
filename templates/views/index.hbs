@@ -21,12 +21,18 @@
                     <option value="Football-1">Football-1</option>
                     <option value="Soccer-1">Soccer-1</option>
                 </select><br><br>
-                <b>Home Team</b><br>
+                <b>Home Team Name</b><br>
                 <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="name-input"</input><br>
-                <b>Away Team</b><br>
+				<b>Home Team Color</b><br>
+                <input id="HomeColor" placeholder="Color" Value="{{HomeColor}}" class="name-input"</input><br>
+                <b>Away Team Name</b><br>
                 <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="name-input"></input><br><br>
+				<b>Away Team Color</b><br>
+                <input id="AwayColor" placeholder="Color" Value="{{AwayColor}}" class="name-input"></input><br><br>
 
                 <button id="save">Save</button><br><br>
+
+                <button id="clear">Clear</button><br><br>
             </div>
 
             <div id="Operate" class="tabcontent">
@@ -41,6 +47,10 @@
                 <button id="DecrementAwayScore" class="button-minus">-</button>
                 <br><br>
                 <button id="send">Send</button><br><br>
+
+                <b>Period</b><br>
+                <button id="Period">Period</button>
+                <input id="SetPeriod" placeholder="=Q1" Value="{{SetPeriod}}"></input><br><br>
 
                 <b>Clock</b><br>
                 <button id="StartTime">Start</button>
