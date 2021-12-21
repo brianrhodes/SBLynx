@@ -1,113 +1,113 @@
 <!DOCTYPE html>
-
-   <html>
+<html lang="en"></html>
+  
    <head>
-       <title>Lynx Video App</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <link rel="icon" href="/images/LynxHead.png">
-       <link rel="stylesheet" href="./css/bootstrap.css">
-       <link rel="stylesheet" href="./css/styles.css">
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="./css/bootstrap.css">
+        <link rel="stylesheet" href="./css/styles.css">
+        
+        <link rel="icon" href="/images/LynxHead.png">
+        <title>SBLynx</title>
     </head>
+    
     <body onload="document.getElementById('defaultOpen').click();">
 
         <div class="main-content">
+            {{!-- top banner --}}
             <div style="background-color: #55009c;">
                     <img class="lynxlogo" src=./images/LynxLogo.jpg></img>
             </div>
 
+            {{!-- Tabs configuration --}}
             <div class="tab">
                 <button class="tablinks" onClick="openTab(event, 'Setup')">Setup</button>
                 <button class="tablinks" onClick="openTab(event, 'Operate')" id="defaultOpen">Operate</button>
                 <button class="tablinks" onClick="openTab(event, 'Settings')">Settings</button>
             </div>
 
-            <div id="Setup" class="tabcontent" style="display:block">
-                
+            {{!-- Setup tab --}}
+            <div id="Setup" class="tabcontent" style="display:block">           
+                {{!-- Sport section --}}
                 <div class="row">
-                        <div class="submenu">SPORT</div>
+                    <div class="submenu">SPORT</div>
+                </div>
+                <div class="container">
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            {{!-- Requires saving the sport attribute based on the the selected sport and showing which is now checked --}}
+                            <div class="btn-group-vertical" role="group" aria-label="Sport Selection Group">
+                                <input type="radio" class="btn-check" name="sport" id="football" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="football">Football</label>
+
+                                <input type="radio" class="btn-check" name="sport" id="soccer" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="soccer">Soccer</label>
+
+                                <input type="radio" class="btn-check" name="sport" id="basketball" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="basketball">Basketball</label>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>   
                     </div>
-                    <div class="container">
-                        <div class="row">
-                            <select name="sport" id="sport" class="sport">
-                                <option value="Football">Football</option>
-                                <option value="Soccer">Soccer</option>
-                                <option value="Basketball">Basketball</option>
-                            </select>
+                </div>
+                <div class="row row_spacer"></div>
+                {{!-- Teams section --}}
+                <div class="row">
+                    <div class="submenu">TEAMS</div>
+                </div>
+                <div class="container">
+                    <div class="row row_spacer"></div>
+                    <div class="row flex-nowrap align-items-center" >
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-6 col-lg-2">
+                            <input type="text" id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="float-end"></input>
                         </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid main-buttons">
-                            Football
-                            </div>
-                            <div class="col-3">
-                            </div>
+                        <div class="col-4 col-lg-2">
+                            <input type="color" id="HomeColor" name="Homecolor" Value="{{HomeColor}}" class="float-start"></input>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid">
-                            Soccer
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid">
-                            Basketball
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row row_spacer"></div>
                     </div>
-                   <div class="row">
-                        <div class="submenu">TEAMS</div>
-                    </div>
-                    <div class="container">
-                        <div class="row row_spacer"></div>
-                        <div class="row flex-nowrap align-items-center" >
-                            <div class="col-3"></div>
-                            <div class="col-4">
-                                <input type="text" id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="float-end"></input>
-                            </div>
-                            <div class="col-5">
-                                <input type="color" id="HomeColor" name="Homecolor" Value="{{HomeColor}}" class="float-start"></input>
-                            </div>
-                        </div>
-                        <div class="row flex-nowrap align-items-center" >
-                            <div class="col-3"></div>
-                            <div class="col-4">
+                    <div class="row flex-nowrap align-items-center" >
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-6 col-lg-2">
                             <input type="text" id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="float-end"></input>
-                            </div>
-                            <div class="col-5">
-                                <input type="color" id="AwayColor" name="AwayColor" Value="{{AwayColor}}" class="float-start"></input>
-                            </div>
                         </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 d-grid gap-2">
-                                <button id="save" class="btn btn-primary main-buttons" type="button">SAVE</button>
-                            </div>
-                            <div class="col-3">
-                            </div>
+                        <div class="col-4 col-lg-2">
+                            <input type="color" id="AwayColor" name="AwayColor" Value="{{AwayColor}}" class="float-start"></input>
                         </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 d-grid gap-2">
-                                <button id="clear" class="btn btn-primary main-buttons" type="button">RESET</button>
-                            </div>
-                            <div class="col-3">
-                            </div>
+                    </div>
+                    {{!-- Save/Reset Buttons --}}
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div> 
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <button id="save" class="btn btn-primary" type="button">SAVE</button>
                         </div>
-                    </div>    
+                        <div class="col-1 col-lg-4"></div>
+                    </div>
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <button id="clear" class="btn btn-primary" type="button">RESET</button>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>
+                    </div>
+
+                    {{!-- Remove this row once the sport radio buttons are implemented --}}
+                    <br>
+                    <div class="row">
+                        <select name="sport" id="sport" class="sport">
+                            <option value="Football">Football</option>
+                            <option value="Soccer">Soccer</option>
+                            <option value="Basketball">Basketball</option>
+                        </select>
+                    </div>
+                </div>  
             </div>
 
             <div id="Operate" class="tabcontent">
