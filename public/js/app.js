@@ -1,7 +1,7 @@
 const socket = io()
 
 const inputForm = document.querySelector('form')
-const layout = document.querySelector('#layout')
+const sport = document.querySelector('#sport')
 const HomeName = document.querySelector('#HomeName')
 const HomeColor = document.querySelector('#HomeColor')
 const HomeScore = document.querySelector('#HomeScore')
@@ -15,7 +15,7 @@ const SetPeriod = document.querySelector('#SetPeriod')
 function DoSocketEmit(command) {
     socket.emit(command, [
         {
-            "layout": layout.value
+            "sport": sport.value
         },
         {
             "team": HomeName.value,

@@ -10,11 +10,17 @@
     </head>
     <body onload="document.getElementById('defaultOpen').click();">
 
-        <div class="main-content">
-            <div style="background-color: #55009c;">
-                    <img class="lynxlogo" src=./images/LynxLogo.jpg></img>
-            </div>
+            <div class="row" style="background-color: #55009c;">
+                <div class="col">
+                    <img class="lynxlogo" src=./images/LynxLogo.png></img>
+                </div>
+			</div>
 
+
+
+        <div class="main-content">
+            <title>Lynx Video App</title>
+            <img class="lynxlogo" src=./images/LynxLogo.jpg><br><br>
             <div class="tab">
                 <button class="tablinks" onClick="openTab(event, 'Setup')">Setup</button>
                 <button class="tablinks" onClick="openTab(event, 'Operate')" id="defaultOpen">Operate</button>
@@ -22,92 +28,23 @@
             </div>
 
             <div id="Setup" class="tabcontent" style="display:block">
-                
-                <div class="row">
-                        <div class="submenu">SPORT</div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <select name="sport" id="sport" class="sport">
-                                <option value="Football">Football</option>
-                                <option value="Soccer">Soccer</option>
-                                <option value="Basketball">Basketball</option>
-                            </select>
-                        </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid main-buttons">
-                            Football
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid">
-                            Soccer
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 button-grid">
-                            Basketball
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row row_spacer"></div>
-                    </div>
-                   <div class="row">
-                        <div class="submenu">TEAMS</div>
-                    </div>
-                    <div class="container">
-                        <div class="row row_spacer"></div>
-                        <div class="row flex-nowrap align-items-center" >
-                            <div class="col-3"></div>
-                            <div class="col-4">
-                                <input type="text" id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="float-end"></input>
-                            </div>
-                            <div class="col-5">
-                                <input type="color" id="HomeColor" name="Homecolor" Value="{{HomeColor}}" class="float-start"></input>
-                            </div>
-                        </div>
-                        <div class="row flex-nowrap align-items-center" >
-                            <div class="col-3"></div>
-                            <div class="col-4">
-                            <input type="text" id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="float-end"></input>
-                            </div>
-                            <div class="col-5">
-                                <input type="color" id="AwayColor" name="AwayColor" Value="{{AwayColor}}" class="float-start"></input>
-                            </div>
-                        </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 d-grid gap-2">
-                                <button id="save" class="btn btn-primary main-buttons" type="button">SAVE</button>
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                        <div class="row row_spacer"></div>
-                        <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 d-grid gap-2">
-                                <button id="clear" class="btn btn-primary main-buttons" type="button">RESET</button>
-                            </div>
-                            <div class="col-3">
-                            </div>
-                        </div>
-                    </div>    
+                <label for="layout"><b>Layout:</b></label>
+                <select name="layout" id="layout" class="layout">
+                    <option value="Football-1">Football-1</option>
+                    <option value="Soccer-1">Soccer-1</option>
+                </select><br><br>
+                <b>Home Team Name</b><br>
+                <input id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="name-input"</input><br>
+				<b>Home Team Color</b><br>
+                <input id="HomeColor" placeholder="Color" Value="{{HomeColor}}" class="name-input"</input><br>
+                <b>Away Team Name</b><br>
+                <input id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="name-input"></input><br><br>
+				<b>Away Team Color</b><br>
+                <input id="AwayColor" placeholder="Color" Value="{{AwayColor}}" class="name-input"></input><br><br>
+
+                <button id="save">Save</button><br><br>
+
+                <button id="clear">Clear</button><br><br>
             </div>
 
             <div id="Operate" class="tabcontent">
@@ -149,8 +86,7 @@
 
             <script src="/socket.io/socket.io.js"></script>
             <script src=./js/app.js></script>
-            <script src=./js/bootstrap.bundle.min.js></script>
-            <script>document.getElementById("sport").value = "{{Sport}}"</script>
+            <script>document.getElementById("layout").value = "{{Layout}}"</script>
 
             <script>
                 document.getElementById("StartTime").addEventListener("click", function() {

@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b6"
+const VERSION = "v0.1b7"
 const COPYRIGHT = "(C)opyright 2021, Lynx System Developers, Inc."
 
 const app = express()
@@ -37,7 +37,7 @@ let clockCount = 0;
 let g_rtv_socket = 0
 
 let appOptions = {
-    Layout: "",
+    Sport: "",
     HomeTeam: "",
 	HomeColor: "",
     HomeScore: "",
@@ -63,7 +63,7 @@ app.get('', (req,res) => {
     }
     catch (err) {
         // No config file - Save App Info
-        appOptions.Layout = ""
+        appOptions.Sport = ""
         appOptions.HomeTeam = "Home Name"
 		appOptions.HomeColor = "Blue"
         appOptions.HomeScore = "0"
@@ -89,7 +89,7 @@ app.get('', (req,res) => {
     res.render('index', {
         version: VERSION,
         copyright: COPYRIGHT,
-        Layout: myObj != undefined ? myObj.Layout : "",
+        Sport: myObj != undefined ? myObj.Sport : "",
         HomeTeam: myObj != undefined ? myObj.HomeTeam : "",
 		HomeColor: myObj != undefined ? myObj.HomeColor : "Blue",
         HomeScore: myObj != undefined ? myObj.HomeScore : "0",
@@ -326,7 +326,7 @@ io.on('connection', (socket) => {
  })
 
  function SaveAppInfo(data) {
-    appOptions.Layout = data[0].layout
+    appOptions.Sport = data[0].sport
     appOptions.HomeTeam = data[1].team
 	appOptions.HomeColor = data[1].color
     appOptions.HomeScore = data[1].score
