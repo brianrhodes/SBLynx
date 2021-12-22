@@ -131,62 +131,6 @@ button:active {
   border-radius: 10px;
 }
 
-/* Bootstrap override - Lynx theme */
-.btn-primary {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-}
-.btn-primary:hover {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-}
-.btn-check:focus + .btn-primary, .btn-primary:focus {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-  box-shadow: 0 0 0 0.25rem rgba(221, 204, 235, 0.5);
-}
-.btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #0a53be;
-}
-.btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(221, 204, 235, 0.5);
-}
-.btn-primary:disabled, .btn-primary.disabled {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-}
-
-.btn-outline-primary {
-  color: #55009c;
-  border-color: #55009c;
-}
-.btn-outline-primary:hover {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-}
-.btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
-  box-shadow: 0 0 0 0.25rem rgba(221, 204, 235, 0.5);
-}
-.btn-check:checked + .btn-outline-primary, .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
-  color: #fff;
-  background-color: #55009c;
-  border-color: #55009c;
-}
-.btn-check:checked + .btn-outline-primary:focus, .btn-check:active + .btn-outline-primary:focus, .btn-outline-primary:active:focus, .btn-outline-primary.active:focus, .btn-outline-primary.dropdown-toggle.show:focus {
-  box-shadow: 0 0 0 0.25rem rgba(221, 204, 235, 0.5);
-}
-.btn-outline-primary:disabled, .btn-outline-primary.disabled {
-  color: #55009c;
-  background-color: transparent;
-}
-
 /* ---OTHER---*/
 .submenu {
   text-align: center;
