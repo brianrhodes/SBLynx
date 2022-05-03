@@ -42,7 +42,7 @@
                         <div class="col-10 col-lg-4 d-grid gap-2">
                             {{!-- Requires saving the sport attribute based on the the selected sport and showing which is now checked --}}
                             <div class="btn-group-vertical" role="group" aria-label="Sport Selection Group">
-                                <input type="radio" class="btn-check" name="sport" id="football" autocomplete="off" checked>
+                                <input type="radio" class="btn-check" name="sport" id="football" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="football">Football</label>
 
                                 <input type="radio" class="btn-check" name="sport" id="soccer" autocomplete="off">
@@ -65,7 +65,7 @@
                     <div class="row flex-nowrap align-items-center" >
                         <div class="col-1 col-lg-4"></div>
                         <div class="col-6 col-lg-2">
-                            <input type="text" id="HomeName" placeholder="Name" Value="{{HomeTeam}}" class="float-end"></input>
+                            <input type="text" id="HomeName" placeholder="Home Team Name" Value="{{HomeTeam}}" class="float-end"></input>
                         </div>
                         <div class="col-4 col-lg-2">
                             <input type="color" id="HomeColor" name="Homecolor" Value="{{HomeColor}}" class="float-start"></input>
@@ -74,7 +74,7 @@
                     <div class="row flex-nowrap align-items-center" >
                         <div class="col-1 col-lg-4"></div>
                         <div class="col-6 col-lg-2">
-                            <input type="text" id="AwayName" placeholder="Name" Value="{{AwayTeam}}" class="float-end"></input>
+                            <input type="text" id="AwayName" placeholder="Away Team Name" Value="{{AwayTeam}}" class="float-end"></input>
                         </div>
                         <div class="col-4 col-lg-2">
                             <input type="color" id="AwayColor" name="AwayColor" Value="{{AwayColor}}" class="float-start"></input>
@@ -111,36 +111,166 @@
             </div>
 
             <div id="Operate" class="tabcontent">
-                <b>{{HomeTeam}}</b><br>
-                <input id="HomeScore" class="score-input" type="number" min="0" max="999" placeholder="Score" Value="{{HomeScore}}"></input>
-                <button id="IncrementHomeScore" class="button-plus">+</button>
-                <button id="DecrementHomeScore" class="button-minus">-</button>
-                <br><br>
-                <b>{{AwayTeam}}</b><br>
-                <input id="AwayScore" class="score-input" type="number" min="0" max="999"  placeholder="Score" Value="{{AwayScore}}"></input>
-                <button id="IncrementAwayScore" class="button-plus">+</button>
-                <button id="DecrementAwayScore" class="button-minus">-</button>
-                <br><br>
-                <button id="send">Send</button><br><br>
+                {{!-- Period section --}}
+                <div class="row">
+                    {{!-- The <Period> header needs to be a sport specific variable (e.g. period, quarter, half...) --}}
+                    <div class="submenu">PERIOD</div>
+                </div>
+                <div class="container">
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            {{!-- The Period values need to be a sport specific variable (e.g. soccer should have 1 and 2) --}}
+                            <div class="btn-group" role="group" aria-label="Period Selection Group">
+                                <input type="radio" class="btn-check" name="period" id="one" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="one">1</label>
+
+                                <input type="radio" class="btn-check" name="period" id="two" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="two">2</label>
+
+                                <input type="radio" class="btn-check" name="period" id="three" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="three">3</label>
+
+                                <input type="radio" class="btn-check" name="period" id="four" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="four">4</label>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>   
+                    </div>
+                </div>
+                <div class="row row_spacer"></div>
+                {{!-- Time section --}}
+                <div class="row">
+                    <div class="submenu">TIME</div>
+                </div>
+                <div class="container">
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <div class="btn-group btn-group-lg" role="group" aria-label="Time Set Group">
+                                <input id="ClockTime" placeholder="Time (mm:ss)" Value="{{SetTime}}"></input>
+                                <button type="button" id="SetTime" class="btn btn-primary">RESET</button>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div> 
+                    </div>
+                                        <div class="row row_spacer"></div>
+                    <div class="row"> 
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <div class="btn-group btn-group-lg" role="group" aria-label="Start Stop Group">
+                                <button type="button" id="StartTime" class="btn btn-success">START</button>
+                                <button type="button" id="StopTime" class="btn btn-danger">STOP</button>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>
+                    </div>
+                </div>
+                <div class="row row_spacer"></div>
+                {{!-- Score section --}}
+                <div class="row">
+                    <div class="submenu">SCORE</div>
+                </div>
+                <div class="container">
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <p align="center">{{HomeTeam}}</p>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-4 col-lg-1 d-grid gap-2">
+                                <input id="HomeScore" class="fs-1" type="number" min="0" max="999" placeholder="Score" Value="{{HomeScore}}"></input>
+                        </div>
+                        <div class="col-6 col-lg-3 d-grid gap-2">
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" id="IncrementHomeScore" class="btn btn-success">+1</button>
+                                    <button type="button" id="DecrementHomeScore" class="btn btn-danger">-1</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" class="btn btn-success">+2</button>
+                                    <button type="button" class="btn btn-danger">-2</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" class="btn btn-success">+3</button>
+                                    <button type="button" class="btn btn-danger">-3</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>
+                    </div>
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <p align="center">{{AwayTeam}}</p>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-1 col-lg-4"></div>
+                        <div class="col-4 col-lg-1 d-grid gap-2">
+                                <input id="AwayScore" class="fs-1" type="number" min="0" max="999" placeholder="Score" Value="{{AwayScore}}"></input>
+                        </div>
+                        <div class="col-6 col-lg-3 d-grid gap-2">
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" id="IncrementAwayScore" class="btn btn-success">+1</button>
+                                    <button type="button" id="DecrementAwayScore" class="btn btn-danger">-1</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" class="btn btn-success">+2</button>
+                                    <button type="button" class="btn btn-danger">-2</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn-group" role="group" aria-label="Start Stop Group">
+                                    <button type="button" class="btn btn-success">+3</button>
+                                    <button type="button" class="btn btn-danger">-3</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+                <div class="col-1 col-lg-4"></div>
+                    {{!-- Refresh Score Buttons --}}
+                    <div class="row row_spacer"></div>
+                    <div class="row">
+                        <div class="col-1 col-lg-4"></div> 
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <button id="send" class="btn btn-primary" type="button">REFRESH</button>
+                        </div>
+                        <div class="col-1 col-lg-4"></div>
+                    </div>
 
                 <b>Period</b><br>
                 <button id="Period">Period</button>
                 <input id="SetPeriod" placeholder="Q1" Value="{{SetPeriod}}"></input><br><br>
-
-                <b>Clock</b><br>
-                <button id="StartTime">Start</button>
-                <button id="StopTime">Stop</button>
-                <p id="clockrunning" style="margin-left:2%; color: red">Clock is Stopped</p>
-                <button id="SetTime">Set</button>
-                <input id="ClockTime" placeholder="Time (mm:ss)" Value="{{SetTime}}"></input><br>
             </div>
 
             <div id="Settings" class="tabcontent">
-                <b>Clock Mode:</b><br>
-                <input type="radio" id="clock_countup" name="fav_language" value="up">
-                <label for="clock_countup">Count Up</label><br>
-                <input type="radio" id="clock_countdown" name="fav_language" value="down">
-                <label for="clock_countup">Count Down</label><br>
+                <div class="row">
+                    <div class="submenu">CLOCK MODE</div>
+                </div>
+                <div class="row row_spacer"></div>
+                <div class="row">
+                        <div class="col-1 col-lg-4"></div> 
+                        <div class="col-10 col-lg-4 d-grid gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="clock_countup" name="clock" value="up">
+                                <label class="form-check-label" for="clock_countup">Count Up</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="clock_countdown" name="clock" value="down">
+                                <label class="form-check-label" for="clock_countdown">Count Down</label>
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-4"></div> 
+                </div>
                 <script>
                     // Get the element with id="Count Up" and click on it
                     document.getElementById('clock_countdown').click();
