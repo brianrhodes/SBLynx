@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b8"
+const VERSION = "v0.1b9"
 const COPYRIGHT = "(C)opyright 2022, Lynx System Developers, Inc."
 
 const app = express()
