@@ -42,14 +42,17 @@
                         <div class="col-10 col-lg-4 d-grid gap-2">
                             {{!-- Requires saving the sport attribute based on the the selected sport and showing which is now checked --}}
                             <div class="btn-group-vertical" role="group" aria-label="Sport Selection Group">
-                                <input type="radio" class="btn-check" name="sport" id="football" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="football">Football</label>
+                                <input type="radio" class="btn-check" name="set-sport" id="sport_football" value="Football" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="sport_football">Football</label>
 
-                                <input type="radio" class="btn-check" name="sport" id="soccer" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="soccer">Soccer</label>
+                                <input type="radio" class="btn-check" name="set-sport" id="sport_soccer" value="Soccer" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="sport_soccer">Soccer</label>
 
-                                <input type="radio" class="btn-check" name="sport" id="basketball" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="basketball">Basketball</label>
+                                <input type="radio" class="btn-check" name="set-sport" id="sport_basketball" value="Basketball" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="sport_basketball">Basketball</label>
+
+                                <input type="radio" class="btn-check" name="set-sport" id="sport_xc" value="Cross-country" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="sport_xc">Cross-country</label>
                             </div>
                         </div>
                         <div class="col-1 col-lg-4"></div>   
@@ -97,16 +100,6 @@
                         </div>
                         <div class="col-1 col-lg-4"></div>
                     </div>
-
-                    {{!-- Remove this row once the sport radio buttons are implemented --}}
-                    <br>
-                    <div class="row">
-                        <select name="sport" id="sport" class="sport">
-                            <option value="Football">Football</option>
-                            <option value="Soccer">Soccer</option>
-                            <option value="Basketball">Basketball</option>
-                        </select>
-                    </div>
                 </div>  
             </div>
 
@@ -123,17 +116,17 @@
                         <div class="col-10 col-lg-4 d-grid gap-2">
                             {{!-- The Period values need to be a sport specific variable (e.g. soccer should have 1 and 2) --}}
                             <div class="btn-group" role="group" aria-label="Period Selection Group">
-                                <input type="radio" class="btn-check" name="period" id="one" autocomplete="off" checked>
-                                <label class="btn btn-outline-primary" for="one">1</label>
+                                <input type="radio" class="btn-check" name="period" id="period_one" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="period_one">1</label>
 
-                                <input type="radio" class="btn-check" name="period" id="two" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="two">2</label>
+                                <input type="radio" class="btn-check" name="period" id="period_two" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="period_two">2</label>
 
-                                <input type="radio" class="btn-check" name="period" id="three" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="three">3</label>
+                                <input type="radio" class="btn-check" name="period" id="period_three" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="period_three">3</label>
 
-                                <input type="radio" class="btn-check" name="period" id="four" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="four">4</label>
+                                <input type="radio" class="btn-check" name="period" id="period_four" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="period_four">4</label>
                             </div>
                         </div>
                         <div class="col-1 col-lg-4"></div>   
@@ -192,14 +185,14 @@
                             </div>
                             <div class="row">
                                 <div class="btn-group" role="group" aria-label="Start Stop Group">
-                                    <button type="button" class="btn btn-success">+2</button>
-                                    <button type="button" class="btn btn-danger">-2</button>
+                                    <button type="button" id="IncrementHomeScore2" class="btn btn-success">+2</button>
+                                    <button type="button" id="DecrementHomeScore2" class="btn btn-danger">-2</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="btn-group" role="group" aria-label="Start Stop Group">
-                                    <button type="button" class="btn btn-success">+3</button>
-                                    <button type="button" class="btn btn-danger">-3</button>
+                                    <button type="button" id="IncrementHomeScore3" class="btn btn-success">+3</button>
+                                    <button type="button" id="DecrementHomeScore3" class="btn btn-danger">-3</button>
                                 </div>
                             </div>
                         </div>
@@ -223,33 +216,29 @@
                             </div>
                             <div class="row">
                                 <div class="btn-group" role="group" aria-label="Start Stop Group">
-                                    <button type="button" class="btn btn-success">+2</button>
-                                    <button type="button" class="btn btn-danger">-2</button>
+                                    <button type="button" id="IncrementAwayScore2" class="btn btn-success">+2</button>
+                                    <button type="button" id="DecrementAwayScore2" class="btn btn-danger">-2</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="btn-group" role="group" aria-label="Start Stop Group">
-                                    <button type="button" class="btn btn-success">+3</button>
-                                    <button type="button" class="btn btn-danger">-3</button>
+                                    <button type="button" id="IncrementAwayScore3" class="btn btn-success">+3</button>
+                                    <button type="button" id="DecrementAwayScore3" class="btn btn-danger">-3</button>
                                 </div>
                             </div>
                         </div>
                     </div>            
                 </div>
                 <div class="col-1 col-lg-4"></div>
-                    {{!-- Refresh Score Buttons --}}
-                    <div class="row row_spacer"></div>
-                    <div class="row">
-                        <div class="col-1 col-lg-4"></div> 
-                        <div class="col-10 col-lg-4 d-grid gap-2">
-                            <button id="send" class="btn btn-primary" type="button">REFRESH</button>
-                        </div>
-                        <div class="col-1 col-lg-4"></div>
+                {{!-- Refresh Score Buttons --}}
+                <div class="row row_spacer"></div>
+                <div class="row">
+                    <div class="col-1 col-lg-4"></div> 
+                    <div class="col-10 col-lg-4 d-grid gap-2">
+                        <button id="send" class="btn btn-primary" type="button">REFRESH</button>
                     </div>
-
-                <b>Period</b><br>
-                <button id="Period">Period</button>
-                <input id="SetPeriod" placeholder="Q1" Value="{{SetPeriod}}"></input><br><br>
+                    <div class="col-1 col-lg-4"></div>
+                </div>
             </div>
 
             <div id="Settings" class="tabcontent">
@@ -272,15 +261,14 @@
                         <div class="col-1 col-lg-4"></div> 
                 </div>
                 <script>
-                    // Get the element with id="Count Up" and click on it
-                    document.getElementById('clock_countdown').click();
+                    // Get the element with id="clock_countdown" and click on it
+                        document.getElementById('clock_countdown').click();
                 </script>
             </div>
 
             <script src="/socket.io/socket.io.js"></script>
             <script src=./js/app.js></script>
             <script src=./js/bootstrap.bundle.min.js></script>
-            <script>document.getElementById("sport").value = "{{Sport}}"</script>
 
             <script>
                 document.getElementById("StartTime").addEventListener("click", function() {
@@ -299,13 +287,50 @@
                 document.getElementById("DecrementHomeScore").addEventListener("click", function() {
                     document.getElementById("HomeScore").stepDown();
                 })
+                document.getElementById("IncrementHomeScore2").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepUp();
+                    document.getElementById("HomeScore").stepUp();
+                })
+                document.getElementById("DecrementHomeScore2").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepDown();
+                    document.getElementById("HomeScore").stepDown();
+                })
+                document.getElementById("IncrementHomeScore3").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepUp();
+                    document.getElementById("HomeScore").stepUp();
+                    document.getElementById("HomeScore").stepUp();
+                })
+                document.getElementById("DecrementHomeScore3").addEventListener("click", function() {
+                    document.getElementById("HomeScore").stepDown();
+                    document.getElementById("HomeScore").stepDown();
+                    document.getElementById("HomeScore").stepDown();
+                })
                 document.getElementById("IncrementAwayScore").addEventListener("click", function() {
                     document.getElementById("AwayScore").stepUp();
                 })
                 document.getElementById("DecrementAwayScore").addEventListener("click", function() {
                     document.getElementById("AwayScore").stepDown();
                 })
+                document.getElementById("IncrementAwayScore2").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepUp();
+                    document.getElementById("AwayScore").stepUp();
+                })
+                document.getElementById("DecrementAwayScore2").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepDown();
+                    document.getElementById("AwayScore").stepDown();
+                })
+                document.getElementById("IncrementAwayScore3").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepUp();
+                    document.getElementById("AwayScore").stepUp();
+                    document.getElementById("AwayScore").stepUp();
+                })
+                document.getElementById("DecrementAwayScore3").addEventListener("click", function() {
+                    document.getElementById("AwayScore").stepDown();
+                    document.getElementById("AwayScore").stepDown();
+                    document.getElementById("AwayScore").stepDown();
+                })
             </script>
+            
             <script>
                 function openTab(evt, tabName) {
                     // Declare all variables

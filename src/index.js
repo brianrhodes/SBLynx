@@ -187,20 +187,20 @@ io.on('connection', (socket) => {
 			out_str += "\x12TextJustify=Center\x14"
 			out_str += "\x12TextSetup=8,2,0,0\x14"
 			out_str += "\x12FontFaceColor=White\x14"
-			out_str += "\x12FontBackColor=" + data[1].color + "\x14"
+			out_str += "\x12FontBackColor=" + ConvertColor(data[1].color) + "\x14"
 			out_str += "\x12TextDraw=" + data[1].team + "\x14"
 			out_str += "\x12TextSetup=4,6,0,2\x14"
 			out_str += "\x12FontFaceColor=White\x14"
-			out_str += "\x12FontBorderColor=" + data[1].color + "\x14"
+			out_str += "\x12FontBorderColor=" + ConvertColor(data[1].color) + "\x14"
 			out_str += "\x12TextJustify=Right\x14"
 			out_str += "\x12TextDraw=" + data[1].score + "\x14"
 			out_str += "\x12TextSetup=8,2,8,0\x14"
 			out_str += "\x12FontFaceColor=White\x14"
-			out_str += "\x12FontBackColor=" + data[2].color + "\x14"
+			out_str += "\x12FontBackColor=" + ConvertColor(data[2].color) + "\x14"
 			out_str += "\x12TextDraw=" + data[2].team + "\x14"
 			out_str += "\x12TextSetup=4,6,12,2\x14"
 			out_str += "\x12FontFaceColor=White\x14"
-			out_str += "\x12FontBorderColor=" + data[2].color + "\x14"
+			out_str += "\x12FontBorderColor=" + ConvertColor(data[2].color) + "\x14"
 			out_str += "\x12TextJustify=Left\x14"
 			out_str += "\x12TextDraw=" + data[2].score + "\x14"
             out_str += "\x12LayoutFlush\x14\x05\x03\x04"
@@ -212,7 +212,7 @@ io.on('connection', (socket) => {
         if(g_rtv_socket)
             g_rtv_socket.write(out_str)
 
-        SaveAppInfo(data)
+           SaveAppInfo(data)
     })
 
     socket.on('save', (data) => {
@@ -326,6 +326,7 @@ io.on('connection', (socket) => {
  })
 
  function SaveAppInfo(data) {
+
     appOptions.Sport = data[0].sport
     appOptions.HomeTeam = data[1].team
 	appOptions.HomeColor = data[1].color
@@ -348,6 +349,14 @@ io.on('connection', (socket) => {
         console.log('Configuration saved successfully.')
     });
  }
+
+ //Convert colors to RGB
+ function ConvertColor(HexColor) {
+    let ConvertedColor
+    ConvertedColor = '0x' + HexColor[1] + HexColor[2] + ',0x' + HexColor[3] + HexColor[4] + ',0x' + HexColor[5] + HexColor[6]
+    return ConvertedColor
+}
+
 //
 // RESULTV SERVER
 // The server listens to a socket for a client to make a connection request.
