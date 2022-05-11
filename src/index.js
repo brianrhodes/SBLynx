@@ -6,7 +6,7 @@ const socketio = require('socket.io')
 const hbs = require('hbs')
 const fs = require('fs')
 
-const VERSION = "v0.1b9"
+const VERSION = "v0.1b10"
 const COPYRIGHT = "(C)opyright 2022, Lynx System Developers, Inc."
 
 const app = express()
@@ -73,6 +73,7 @@ app.get('', (req,res) => {
         appOptions.SetPeriod = "Q1"
         appOptions.SetTime = "15:00"
         appOptions.CurrentTime = "15:00"
+        appOptions.UpDown = "down"
         var data = JSON.stringify(appOptions);
         myObj = JSON.parse(data);
 
@@ -98,7 +99,8 @@ app.get('', (req,res) => {
         AwayScore: myObj != undefined ? myObj.AwayScore : "0",
         SetPeriod: myObj != undefined ? myObj.SetPeriod : "Q1",
         SetTime: myObj != undefined ? myObj.SetTime : "15:00",
-        CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00"
+        CurrentTime: myObj != undefined ? myObj.CurrentTime : "15:00",
+        UpDown: myObj != undefined ? myObj.UpDown : "down"
     })
         
     if(myObj.CurrentTime == "0") {
@@ -389,4 +391,9 @@ rtv_server.on('connection', function(rtv_socket) {
     });
 });
 
-
+// Helper functions
+// This helper function sets the checked status of radio buttons
+hbs.registerHelper('checked', function(value, test) {
+    if (value == undefined) return '';
+    return value==test ? 'checked' : '';
+});

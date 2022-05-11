@@ -26,7 +26,7 @@ function DoSocketEmit(command) {
     socket.emit(command, [
         {
             //"sport": sport.value
-            "sport": (Football.checked ? "Football" : Basketball.checked ? "Basketball" : Soccer.checked ? "Soccer" : "Cross-country")
+            "sport": (Football.checked ? "Football" : Basketball.checked ? "Basketball" : Soccer.checked ? "Soccer" : XC.checked ? "XC" : "unknown")
         },
         {
             "team": HomeName.value,
@@ -41,7 +41,7 @@ function DoSocketEmit(command) {
         {
             "SetTime": ClockTime.value,     
             "CurrentTime": "00:00",     
-            "UpDown": (CountUp.checked ? "up" : "down"),
+            "UpDown": (CountUp.checked ? "up" : CountDown.checked ? "down" : "unknown"),
             "SetPeriod": (Period1.checked ? "Q1" : Period2.checked ? "Q2" : Period3.checked ? "Q3" : "Q4")
         }
     ])

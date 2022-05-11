@@ -42,16 +42,16 @@
                         <div class="col-10 col-lg-4 d-grid gap-2">
                             {{!-- Requires saving the sport attribute based on the the selected sport and showing which is now checked --}}
                             <div class="btn-group-vertical" role="group" aria-label="Sport Selection Group">
-                                <input type="radio" class="btn-check" name="set-sport" id="sport_football" value="Football" autocomplete="off">
+                                <input type="radio" class="btn-check" name="sport" id="sport_football" value="Football" autocomplete="off" {{checked Sport 'Football'}}>
                                 <label class="btn btn-outline-primary" for="sport_football">Football</label>
 
-                                <input type="radio" class="btn-check" name="set-sport" id="sport_soccer" value="Soccer" autocomplete="off">
+                                <input type="radio" class="btn-check" name="sport" id="sport_soccer" value="Soccer" autocomplete="off" {{checked Sport 'Soccer'}}>
                                 <label class="btn btn-outline-primary" for="sport_soccer">Soccer</label>
 
-                                <input type="radio" class="btn-check" name="set-sport" id="sport_basketball" value="Basketball" autocomplete="off">
+                                <input type="radio" class="btn-check" name="sport" id="sport_basketball" value="Basketball" autocomplete="off" {{checked Sport 'Basketball'}}>
                                 <label class="btn btn-outline-primary" for="sport_basketball">Basketball</label>
 
-                                <input type="radio" class="btn-check" name="set-sport" id="sport_xc" value="Cross-country" autocomplete="off">
+                                <input type="radio" class="btn-check" name="sport" id="sport_xc" value="XC" autocomplete="off" {{checked Sport 'XC'}}>
                                 <label class="btn btn-outline-primary" for="sport_xc">Cross-country</label>
                             </div>
                         </div>
@@ -116,16 +116,16 @@
                         <div class="col-10 col-lg-4 d-grid gap-2">
                             {{!-- The Period values need to be a sport specific variable (e.g. soccer should have 1 and 2) --}}
                             <div class="btn-group" role="group" aria-label="Period Selection Group">
-                                <input type="radio" class="btn-check" name="period" id="period_one" autocomplete="off">
+                                <input type="radio" class="btn-check" name="period" id="period_one" autocomplete="off" {{checked SetPeriod 'Q1'}}>
                                 <label class="btn btn-outline-primary" for="period_one">1</label>
 
-                                <input type="radio" class="btn-check" name="period" id="period_two" autocomplete="off">
+                                <input type="radio" class="btn-check" name="period" id="period_two" autocomplete="off" {{checked SetPeriod 'Q2'}}>
                                 <label class="btn btn-outline-primary" for="period_two">2</label>
 
-                                <input type="radio" class="btn-check" name="period" id="period_three" autocomplete="off">
+                                <input type="radio" class="btn-check" name="period" id="period_three" autocomplete="off" {{checked SetPeriod 'Q3'}}>
                                 <label class="btn btn-outline-primary" for="period_three">3</label>
 
-                                <input type="radio" class="btn-check" name="period" id="period_four" autocomplete="off">
+                                <input type="radio" class="btn-check" name="period" id="period_four" autocomplete="off" {{checked SetPeriod 'Q4'}}>
                                 <label class="btn btn-outline-primary" for="period_four">4</label>
                             </div>
                         </div>
@@ -247,23 +247,18 @@
                 </div>
                 <div class="row row_spacer"></div>
                 <div class="row">
-                        <div class="col-1 col-lg-4"></div> 
-                        <div class="col-10 col-lg-4 d-grid gap-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" id="clock_countup" name="clock" value="up">
-                                <label class="form-check-label" for="clock_countup">Count Up</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" id="clock_countdown" name="clock" value="down">
-                                <label class="form-check-label" for="clock_countdown">Count Down</label>
-                            </div>
+                    <div class="col-1 col-lg-4"></div> 
+                    <div class="col-10 col-lg-4 d-grid gap-2">
+                        <div class="btn-group" role="group" aria-label="Click Direction Group">
+                            <input type="radio" class="btn-check" name="clock" id="clock_countup" value="up" autocomplete="off" {{checked UpDown 'up'}}>
+                            <label class="btn btn-outline-primary" for="clock_countup">Count Up</label>
+
+                            <input type="radio" class="btn-check" name="clock" id="clock_countdown" value="down" autocomplete="off" {{checked UpDown 'down'}}>
+                            <label class="btn btn-outline-primary" for="clock_countdown">Count Down</label>
                         </div>
-                        <div class="col-1 col-lg-4"></div> 
+                    </div>
+                    <div class="col-1 col-lg-4"></div> 
                 </div>
-                <script>
-                    // Get the element with id="clock_countdown" and click on it
-                        document.getElementById('clock_countdown').click();
-                </script>
             </div>
 
             <script src="/socket.io/socket.io.js"></script>
